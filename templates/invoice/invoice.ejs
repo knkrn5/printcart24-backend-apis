@@ -1,0 +1,614 @@
+<%
+  /* ─── Helper utilities ─────────────────────────────────────────────────────── */
+  const value = (input, fallback) => {
+    const fb = (fallback !== undefined) ? fallback : "";
+    return (input !== undefined && input !== null && input !== "") ? input : fb;
+  };
+
+  /* ─── Template variables resolved from view-model ──────────────────────────── */
+  const currencySymbol   = value(typeof currency       !== "undefined" ? currency       : undefined, "₹");
+  const invoiceId        = value(typeof invoiceNumber  !== "undefined" ? invoiceNumber  : undefined, "");
+  const invoiceDate      = value(typeof issueDate      !== "undefined" ? issueDate      : undefined,
+                             value(typeof date !== "undefined" ? date : undefined, ""));
+  const orderNumberText  = value(typeof orderNumber    !== "undefined" ? orderNumber    : undefined,
+                             value(typeof orderId !== "undefined" ? orderId : undefined,
+                             value(invoiceId, "PC1207260001")));
+  const orderPlacedDate  = value(typeof orderDate      !== "undefined" ? orderDate      : undefined,
+                             value(typeof placedAt !== "undefined" ? placedAt : undefined,
+                             value(invoiceDate, "12/7/2026")));
+
+  const payment     = (typeof paymentInfo !== "undefined") ? paymentInfo : {};
+  const sellerData  = (typeof sellerInfo  !== "undefined") ? sellerInfo
+                    : (typeof seller      !== "undefined") ? seller
+                    : (typeof company     !== "undefined") ? company : {};
+  const customerData = (typeof customerInfo !== "undefined") ? customerInfo
+                     : (typeof customer    !== "undefined") ? customer
+                     : (typeof client      !== "undefined") ? client : {};
+  const shippingData = (typeof shippingInfo    !== "undefined") ? shippingInfo
+                     : (typeof shipping        !== "undefined") ? shipping
+                     : (typeof shippingAddress !== "undefined") ? shippingAddress : customerData;
+  const rows      = Array.isArray(typeof items  !== "undefined" ? items  : undefined) ? items  : [];
+  const totalsData = (typeof totals !== "undefined") ? totals : {};
+
+  /* ─── Currency formatter ────────────────────────────────────────────────────── */
+  const amount = (input) => {
+    const n = Number(input);
+    return Number.isFinite(n) ? `${currencySymbol}${n.toFixed(2)}` : `${currencySymbol}0.00`;
+  };
+  const numeric = (v) => { const n = Number(v); return Number.isFinite(n) ? n : 0; };
+  const currencyLabel = currencySymbol.trim();
+
+  /* ─── Amount-in-words ───────────────────────────────────────────────────────── */
+  const _ones = ["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine",
+                 "Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen",
+                 "Seventeen","Eighteen","Nineteen"];
+  const _tens = ["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];
+  const _u1000 = (n) => {
+    let w = "";
+    if (n >= 100) { w += `${_ones[Math.floor(n/100)]} Hundred`; n %= 100; if (n) w += " "; }
+    if (n >= 20)  { w += _tens[Math.floor(n/10)]; n %= 10; if (n) w += ` ${_ones[n]}`; }
+    else if (n)   { w += _ones[n]; }
+    return w;
+  };
+  const _n2w = (input) => {
+    let n = Math.floor(Math.abs(Number(input)));
+    if (!Number.isFinite(n) || n === 0) return "Zero";
+    const g = [{v:10000000,l:"Crore"},{v:100000,l:"Lakh"},{v:1000,l:"Thousand"},{v:1,l:""}];
+    const parts = [];
+    g.forEach(({v, l}) => { const c = Math.floor(n/v); if (c) { parts.push(`${_u1000(c)}${l?" "+l:""}`); n %= v; } });
+    return parts.join(" ");
+  };
+  const rupeesInWords = (input) => {
+    const n = Number(input);
+    if (!Number.isFinite(n)) return "";
+    const r = Math.floor(Math.abs(n));
+    const p = Math.round((Math.abs(n) - r) * 100);
+    return `Rupees ${_n2w(r)}${p ? ` and ${_n2w(p)} Paise` : ""} Only`;
+  };
+
+  /* ─── Line-item helpers ─────────────────────────────────────────────────────── */
+  const lineUnit     = (item) => value(item.unitPrice, value(item.unit, 0));
+  const lineQty      = (item) => Number(value(item.quantity, item.qty || 0));
+  const lineDiscount = (item) => value(item.discount, value(item.discountAmount, value(item.discountValue, 0)));
+  const lineTax      = (item) => value(item.tax, value(item.gst, 0));
+  const lineTotal    = (item) => value(item.total, value(item.amount, numeric(lineUnit(item)) * lineQty(item)));
+
+  const sumRows = (fn) => rows.reduce((s, it) => s + numeric(fn(it)), 0);
+
+  const addonText = (a) => {
+    if (typeof a === "string") return a;
+    if (!a || typeof a !== "object") return "";
+    const n = value(a.name, value(a.title, value(a.label, "")));
+    const p = value(a.price, value(a.amount, value(a.value, "")));
+    return p !== "" ? `${n} (+${amount(p)})` : n;
+  };
+  const detailText = (d) => {
+    if (typeof d === "string") return d;
+    if (!d || typeof d !== "object") return "";
+    const lbl = value(d.label, value(d.name, value(d.key, "")));
+    const val = value(d.value, value(d.text, value(d.description, "")));
+    return lbl && val ? `${lbl}: ${val}` : value(val, lbl);
+  };
+
+  const lineDetails = (item) => {
+    const out = [];
+    const push = (lbl, v) => {
+      if (!v) return;
+      if (Array.isArray(v)) {
+        const lst = v.map(lbl === "Addons" ? addonText : detailText).filter(Boolean);
+        if (lst.length) out.push(`${lbl}: ${lst.join(", ")}`);
+      } else {
+        out.push(`${lbl}: ${v}`);
+      }
+    };
+    push("Service",    value(item.service,   item.serviceName));
+    push("Size",       value(item.size,      item.paperSize));
+    push("Color",      item.color);
+    push("Print Type", value(item.printType, item.side));
+    push("Addons",     value(item.addons,    value(item.addOns, item.options)));
+    const extra = value(item.details, value(item.orderDetails, item.metadata));
+    if (Array.isArray(extra))
+      extra.map(detailText).filter(Boolean).forEach(d => out.push(d));
+    else if (extra && typeof extra === "object")
+      Object.entries(extra).forEach(([k,v]) => { if (v!=null && v!=="") out.push(`${k}: ${v}`); });
+    return out;
+  };
+
+  /* ─── Order-level totals ────────────────────────────────────────────────────── */
+  const itemSubtotal        = value(totalsData.itemSubtotal,  value(typeof subtotal !== "undefined" ? subtotal : undefined, 0));
+  const invoiceAddonsSubtotal = value(totalsData.addonsSubtotal, typeof addonsSubtotal !== "undefined" ? addonsSubtotal : 0);
+  const invoiceDeliveryFee  = value(totalsData.deliveryFee,   typeof deliveryFee  !== "undefined" ? deliveryFee  : 0);
+  const invoicePlatformFee  = value(totalsData.platformFee,   typeof platformFee  !== "undefined" ? platformFee  : 0);
+  const invoiceDiscount     = value(totalsData.discount, value(totalsData.discountAmount, typeof discount !== "undefined" ? discount : 0));
+  const invoiceTaxAmount    = value(totalsData.taxAmount,     typeof taxAmount !== "undefined" ? taxAmount : 0);
+  const grandTotal          = value(totalsData.grandTotal, value(typeof total !== "undefined" ? total : undefined, 0));
+
+  const totalUnitAmount     = value(itemSubtotal, sumRows(it => numeric(lineUnit(it)) * lineQty(it)));
+  const totalQuantity       = value(totalsData.quantity, value(totalsData.qty, sumRows(lineQty)));
+  const totalDiscountAmount = value(invoiceDiscount, sumRows(lineDiscount));
+  const totalTaxValue       = value(invoiceTaxAmount, sumRows(lineTax));
+  const totalPayableAmount  = value(grandTotal, sumRows(lineTotal));
+
+  /* ─── Brand / assets ────────────────────────────────────────────────────────── */
+  const paymentModeText  = value(payment.mode, value(typeof paymentMode !== "undefined" ? paymentMode : undefined, ""));
+  const paymentStatus    = value(payment.status, "");
+  const paymentTxnId     = value(payment.transactionId, "");
+  const brandName        = value(sellerData.brandName, value(sellerData.name, "Print Campus"));
+  const brandLogoSrc     = value(sellerData.logoDataUri, value(typeof logoDataUri !== "undefined" ? logoDataUri : undefined, ""));
+  const qrCodeSrc        = value(typeof qrCodeDataUrl !== "undefined" ? qrCodeDataUrl : undefined,
+                             value(typeof qrCodeDataUri !== "undefined" ? qrCodeDataUri : undefined, ""));
+  const signatureSrc     = value(typeof signatureDataUri !== "undefined" ? signatureDataUri : undefined,
+                             value(sellerData.signatureDataUri, ""));
+  const sellerWebsite    = value(sellerData.website, "www.printcampus.in");
+  const sellerWebsiteHref = /^https?:\/\//i.test(sellerWebsite) ? sellerWebsite : `https://${sellerWebsite}`;
+%><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Invoice <%= invoiceId %></title>
+<style>
+
+/* ── Page setup ──────────────────────────────────────────────────────────── */
+@page { size: A4 portrait; margin: 12mm 14mm 12mm 14mm; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #263e4d;
+  font-size: 11px;
+  line-height: 1.45;
+  background: #fffaf0;
+}
+
+/* ── 1. Header table ─────────────────────────────────────────────────────── */
+table.t-header {
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 1.5px solid #ffc928;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+table.t-header td { vertical-align: middle; padding-bottom: 6px; }
+td.brand-cell  { width: 40%; vertical-align: middle; }
+td.meta-cell   { width: 60%; text-align: right; vertical-align: middle; }
+
+/* Brand logo — explicit pixel dims (70x70) maintain 1:1 natural aspect ratio */
+img.brand-logo { display: block; width: 70px; height: 70px; }
+
+.inv-title {
+  color: #263e4d;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-bottom: 4px;
+}
+table.t-meta { margin-left: auto; }
+table.t-meta td { padding: 1px 2px; font-size: 10px; color: #5f6f79; line-height: 1.35; }
+td.ml { font-weight: 700; color: #263e4d; text-align: right; white-space: nowrap; }
+td.mv { text-align: left; padding-left: 6px; }
+
+/* ── 2. Address / party table ────────────────────────────────────────────── */
+table.t-party {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 10px 0;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+td.party {
+  width: 33%;
+  vertical-align: top;
+  padding: 0;
+}
+td.party-email-cell {
+  padding-top: 6px;
+  vertical-align: top;
+  padding-left: 0;
+  padding-right: 0;
+}
+.section-title {
+  color: #263e4d;
+  font-size: 11.5px;
+  font-weight: 800;
+  margin-bottom: 7px;
+}
+.party-body {
+  color: #5f6f79;
+  font-size: 10.5px;
+  line-height: 1.45;
+}
+.party-body strong {
+  display: block;
+  color: #344f5f;
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+
+/* ── 3. Items table (LOCKED LAYOUT FOR LIBREOFFICE PDF RENDERING) ─────────
+ * IMPORTANT: The items table width (100%), column proportions (5%, 44%, 11%,
+ * 7%, 11%, 11%, 11%), fixed table-layout, and cell wrapping rules are LOCKED.
+ * Do NOT alter column widths, table-layout, or sizing rules. This setup guarantees
+ * consistent 100% full-width rendering and margin alignment across short single-item
+ * and multi-item orders during LibreOffice PDF conversion.
+ * ───────────────────────────────────────────────────────────────────────── */
+table.t-items {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: collapse;
+  table-layout: fixed !important;
+  margin-top: 24px;
+  border: 1px solid #cbd5e1;
+}
+table.t-items thead { display: table-header-group; }
+table.t-items thead th {
+  background: #f1f5f9;
+  color: #263e4d;
+  border: 1px solid #cbd5e1;
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 8px 6px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+table.t-items tbody td {
+  border: 1px solid #e2e8f0;
+  color: #344f5f;
+  padding: 8px 6px;
+  vertical-align: top;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+table.t-items tbody tr { page-break-inside: avoid; }
+table.t-items tbody tr:nth-child(even) td {
+  background-color: #fafbfc;
+}
+.col-serial  { width: 6% !important;  text-align: center; }
+.col-desc    { width: 54% !important; text-align: left; }
+.col-unit    { width: 14% !important; text-align: right; }
+.col-qty     { width: 8% !important;  text-align: center; }
+.col-total   { width: 18% !important; text-align: right; }
+.item-name {
+  color: #344f5f;
+  font-weight: 700;
+  font-size: 11px;
+  margin-bottom: 3px;
+  overflow-wrap: anywhere;
+}
+.item-detail {
+  color: #697983;
+  font-size: 10px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+/* ── 4. Total row ────────────────────────────────────────────────────────── */
+table.t-items tr.total-row td {
+  background: #263e4d;
+  border-bottom: 0;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 10.5px;
+  padding: 9px 6px;
+}
+
+/* ── 5. Amount in words row ──────────────────────────────────────────────── */
+table.t-items tr.words-row td {
+  background: #fff1c7;
+  border-bottom: 0;
+  color: #263e4d;
+  font-size: 10.5px;
+  padding: 8px 6px;
+}
+.words-label { color: #ff6900; font-weight: 800; }
+
+/* ── 6. Lower section: Amount-in-words block + payment + pricing summary ─── */
+/* ── 6. Integrated Payment Info & Pricing Breakup (4-Column Layout) ───────── */
+table.t-lower-combined {
+  width: 100% !important;
+  min-width: 100% !important;
+  max-width: 100% !important;
+  border-collapse: collapse;
+  table-layout: fixed !important;
+  margin-top: 18px;
+  background: #fffaf0;
+  border: 1px solid #f1dca4;
+  page-break-inside: avoid;
+}
+table.t-lower-combined td {
+  padding: 3.5px 6px;
+  font-size: 10.5px;
+  line-height: 1.3;
+  vertical-align: top;
+  border-bottom: 1px solid #f1dca4;
+}
+td.comb-head {
+  background: #fff5d6;
+  color: #263e4d;
+  font-weight: 800;
+  font-size: 11px;
+  padding: 5px 8px;
+  border-bottom: 1.5px solid #f1dca4;
+}
+td.lbl-col {
+  font-weight: 700;
+  color: #263e4d;
+  white-space: nowrap;
+}
+td.val-col-left {
+  color: #344f5f;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+td.val-col-right {
+  color: #263e4d;
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+tr.grand-total-row td {
+  border-top: 1.5px solid #ff6900;
+  border-bottom: 0;
+  background: #fff1c7;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+td.gt-label {
+  color: #263e4d;
+  font-weight: 800;
+  font-size: 12px;
+}
+td.gt-val {
+  color: #ff6900;
+  font-weight: 800;
+  font-size: 13px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ── 7. Footer ───────────────────────────────────────────────────────────── */
+table.t-footer {
+  width: 100%;
+  border-collapse: collapse;
+}
+table.t-footer td {
+  padding-top: 0;
+  color: #697983;
+  font-size: 10.5px;
+  line-height: 1.5;
+  vertical-align: top;
+}
+td.foot-left  { text-align: left; width: 100%; }
+.fc-label { color: #263e4d; font-weight: 800; }
+a.fc-link { color: #ff6900; text-decoration: none; }
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     1. HEADER
+══════════════════════════════════════════════════════════════ -->
+<table class="t-header" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td class="brand-cell">
+      <% if (brandLogoSrc) { %>
+        <img class="brand-logo"
+             src="<%= brandLogoSrc %>"
+             alt="<%= brandName %>"
+             width="70" height="70">
+      <% } else { %>
+        <strong style="font-size:20px;color:#263e4d;"><%= brandName %></strong>
+      <% } %>
+    </td>
+    <td class="meta-cell">
+      <div class="inv-title">RECEIPT</div>
+      <table class="t-meta" cellpadding="0" cellspacing="0" border="0">
+        <tr><td class="ml">Receipt Number:</td><td class="mv"><%= invoiceId %></td></tr>
+        <tr><td class="ml">Receipt Date:</td><td class="mv"><%= invoiceDate %></td></tr>
+        <tr><td class="ml">Order Number:</td><td class="mv"><%= orderNumberText %></td></tr>
+        <tr><td class="ml">Order Date:</td><td class="mv"><%= orderPlacedDate %></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- ══════════════════════════════════════════════════════════════
+     2. ADDRESS
+══════════════════════════════════════════════════════════════ -->
+<table class="t-party" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <!-- Sold By -->
+    <td class="party" rowspan="2">
+      <div class="section-title">Sold By (Seller):</div>
+      <div class="party-body">
+        <strong><%= value(sellerData.legalName, value(sellerData.name, "Print Campus Solutions Private Limited")) %></strong>
+        <% if (sellerData.address) { %><%= sellerData.address %><br><% } %>
+        <% if (sellerData.city)    { %><%= sellerData.city %><br><% } %>
+        <% if (sellerData.gstin)   { %>GSTIN: <%= sellerData.gstin %><% } %>
+      </div>
+    </td>
+    <!-- Bill To -->
+    <td class="party">
+      <div class="section-title">Bill To (Customer):</div>
+      <div class="party-body">
+        <strong><%= value(customerData.name, "") %></strong>
+        <% if (customerData.address) { %><%= customerData.address %><br><% } %>
+        <% if (customerData.city)    { %><%= customerData.city %><br><% } %>
+        <% if (customerData.phone)   { %>Phone: <%= customerData.phone %><% } %>
+      </div>
+    </td>
+    <!-- Shipping Address -->
+    <td class="party">
+      <div class="section-title">Shipping Address:</div>
+      <div class="party-body">
+        <%
+          var sName  = value(shippingData.name,  value(customerData.name,  ""));
+          var sAddr  = value(shippingData.address, value(customerData.address, ""));
+          var sCity  = value(shippingData.city,  value(customerData.city,  ""));
+          var sPhone = value(shippingData.phone, customerData.phone);
+          var sEmail = value(shippingData.email, customerData.email);
+        %>
+        <strong><%= sName %></strong>
+        <% if (sAddr)  { %><%= sAddr %><br><% } %>
+        <% if (sCity)  { %><%= sCity %><br><% } %>
+        <% if (sPhone) { %>Phone: <%= sPhone %><% } %>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="party-email-cell">
+      <div class="party-body" style="word-break: break-all; overflow-wrap: break-word;">
+        Email: <%= customerData.email ? customerData.email : "-" %><% if (sEmail && sEmail !== customerData.email) { %>&nbsp;&nbsp;|&nbsp;&nbsp;Shipping Email: <%= sEmail %><% } %>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<!-- ══════════════════════════════════════════════════════════════
+     3. ITEMS TABLE (LOCKED LAYOUT FOR LIBREOFFICE PDF RENDERING)
+     IMPORTANT: Do NOT modify table width, colgroup percentages (5%, 44%,
+     11%, 7%, 11%, 11%, 11%), or HTML width attributes. This deterministic layout
+     is locked for LibreOffice HTML-to-PDF conversion. It guarantees that the table
+     spans 100% of the invoice content area with fixed margins regardless of line item count
+     or description text length.
+══════════════════════════════════════════════════════════════ -->
+<table class="t-items" width="100%" cellpadding="0" cellspacing="0" border="1" style="width:100% !important; min-width:100% !important; max-width:100% !important; table-layout:fixed !important; border-collapse:collapse;">
+  <colgroup>
+    <col width="6%" style="width:6% !important;">
+    <col width="54%" style="width:54% !important;">
+    <col width="14%" style="width:14% !important;">
+    <col width="8%" style="width:8% !important;">
+    <col width="18%" style="width:18% !important;">
+  </colgroup>
+  <thead>
+    <tr>
+      <th class="col-serial" width="6%" style="width:6% !important;">S.No</th>
+      <th class="col-desc" width="54%" style="width:54% !important;">Item &amp; Description</th>
+      <th class="col-unit" width="14%" style="width:14% !important;">Unit Price (<%= currencyLabel %>)</th>
+      <th class="col-qty" width="8%" style="width:8% !important;">Qty</th>
+      <th class="col-total" width="18%" style="width:18% !important;">Total (<%= currencyLabel %>)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% if (rows.length) { %>
+      <% rows.forEach(function(item, idx) { var dets = lineDetails(item); %>
+      <tr>
+        <td class="col-serial" width="6%" style="width:6% !important;"><%= value(item.serial, idx + 1) %></td>
+        <td class="col-desc" width="54%" style="width:54% !important;">
+          <div class="item-name"><%= value(item.title, value(item.description, "Item")) %></div>
+          <% dets.forEach(function(d) { %><div class="item-detail"><%= d %></div><% }); %>
+        </td>
+        <td class="col-unit" width="14%" style="width:14% !important;"><%= amount(lineUnit(item)) %></td>
+        <td class="col-qty" width="8%" style="width:8% !important;"><%= lineQty(item) %></td>
+        <td class="col-total" width="18%" style="width:18% !important;"><strong><%= amount(lineTotal(item)) %></strong></td>
+      </tr>
+      <% }); %>
+    <% } else { %>
+      <tr><td colspan="5" width="100%" style="text-align:center;padding:12px;width:100% !important;">No invoice items available.</td></tr>
+    <% } %>
+
+    <!-- TOTAL ROW (dark bar, client original design) -->
+    <tr class="total-row">
+      <td class="col-serial" width="6%" style="width:6% !important;">TOTAL</td>
+      <td class="col-desc" width="54%" style="width:54% !important;text-align:left;">
+        <%= paymentModeText ? `${paymentModeText} (mode of payment)` : "Mode of payment" %>
+      </td>
+      <td class="col-unit" width="14%" style="width:14% !important;"><%= amount(totalUnitAmount) %></td>
+      <td class="col-qty" width="8%" style="width:8% !important;"><%= totalQuantity %></td>
+      <td class="col-total" width="18%" style="width:18% !important;"><%= amount(totalPayableAmount) %></td>
+    </tr>
+
+    <!-- AMOUNT IN WORDS ROW (SINGLE & ONLY SOURCE OF TRUTH - LOCKED)
+         IMPORTANT: This table row inside the items table is the single and only source for
+         displaying the amount in words. Do NOT modify its styling, positioning, background, or
+         layout unless explicitly requested. -->
+    <tr class="words-row">
+      <td colspan="5" width="100%" style="width:100% !important;">
+        <span class="words-label">Amount in words:</span>&nbsp;<%= rupeesInWords(totalPayableAmount) %>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ══════════════════════════════════════════════════════════════
+     4. LOWER SECTION: INTEGRATED PAYMENT INFO + PRICING BREAKUP TABLE
+        LOCKED PRODUCTION LAYOUT
+
+     IMPORTANT:
+     This 4-column HTML table is intentionally used to keep Payment Information
+     and Pricing Breakup compact, aligned, and vertically stable during
+     LibreOffice HTML-to-PDF conversion.
+
+     LOCKED:
+     - 4-column table structure
+     - Column widths: 18% (left label), 32% (left value), 22% (right label), 28% (right value)
+     - table-layout: fixed
+     - Explicit HTML width attributes
+     - Compact row spacing
+     - Long-value wrapping inside the assigned cell
+     - Current alignment and sizing behavior
+
+     Do NOT convert this section back to independent div/block sections.
+     Do NOT change the column proportions, table structure, sizing rules,
+     or wrapping behavior unless explicitly requested.
+══════════════════════════════════════════════════════════════ -->
+<table class="t-lower-combined" width="100%" cellpadding="0" cellspacing="0" border="1" style="width:100% !important; min-width:100% !important; max-width:100% !important; table-layout:fixed !important; border-collapse:collapse;">
+  <colgroup>
+    <col width="18%" style="width:18% !important;">
+    <col width="32%" style="width:32% !important;">
+    <col width="22%" style="width:22% !important;">
+    <col width="28%" style="width:28% !important;">
+  </colgroup>
+  <tbody>
+    <tr>
+      <td colspan="4" class="comb-head">Payment Information</td>
+    </tr>
+    <tr>
+      <td class="lbl-col" width="18%">Method:</td>
+      <td class="val-col-left" width="32%"><%= paymentModeText ? paymentModeText : "-" %></td>
+      <td class="lbl-col" width="22%">Status:</td>
+      <td class="val-col-right" width="28%"><%= paymentStatus ? paymentStatus : "-" %></td>
+    </tr>
+    <tr>
+      <td class="lbl-col" width="18%">Transaction ID:</td>
+      <td class="val-col-left" width="32%"><%= paymentTxnId ? paymentTxnId : "-" %></td>
+      <td class="lbl-col" width="22%">Item Subtotal:</td>
+      <td class="val-col-right" width="28%"><%= amount(totalUnitAmount) %></td>
+    </tr>
+    <tr>
+      <td class="lbl-col" width="18%">Add-ons Subtotal:</td>
+      <td class="val-col-left" width="32%"><%= amount(invoiceAddonsSubtotal) %></td>
+      <td class="lbl-col" width="22%">Delivery Fee:</td>
+      <td class="val-col-right" width="28%"><%= amount(invoiceDeliveryFee) %></td>
+    </tr>
+    <tr class="grand-total-row">
+      <td class="lbl-col" width="18%">&nbsp;</td>
+      <td class="val-col-left" width="32%">&nbsp;</td>
+      <td class="gt-label" width="22%">Grand Total:</td>
+      <td class="gt-val" width="28%"><%= amount(totalPayableAmount) %></td>
+    </tr>
+  </tbody>
+</table>
+
+<% if (qrCodeSrc) { %>
+  <div style="margin-top:8px;">
+    <img src="<%= qrCodeSrc %>" alt="Invoice QR" width="80" height="80"
+         style="display:block;width:80px;height:80px;">
+  </div>
+<% } %>
+
+<!-- ══════════════════════════════════════════════════════════════
+     5. FOOTER
+══════════════════════════════════════════════════════════════ -->
+<div style="height: 18px; line-height: 18px; font-size: 1px;">&nbsp;</div>
+<table class="t-footer" cellpadding="0" cellspacing="0" border="0">
+  <tr>
+    <td class="foot-left">
+      <span class="fc-label">Email:</span>&nbsp;<%= value(sellerData.email, "support@printcampus.in") %><br>
+      <span class="fc-label">Website:</span>&nbsp;<a class="fc-link" href="<%= sellerWebsiteHref %>"><%= sellerWebsite %></a>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

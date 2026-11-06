@@ -1,0 +1,1532 @@
+// scripts/data/indiaStatesCities.data.js
+
+const indiaStatesCities = [
+    {
+        stateCode: 'AN',
+        stateName: 'Andaman and Nicobar Islands',
+        cities: [
+            'Port Blair',
+            'Diglipur',
+            'Mayabunder',
+            'Rangat',
+            'Hut Bay',
+
+            // NEW (North & Middle Andaman)
+            'Bakultala',
+            'Kadamtala',
+            'Kalighat',
+
+            // NEW (South Andaman)
+            'Ferrargunj',
+            'Garacharma',
+            'Prothrapur',
+            'Bambooflat',
+            'Wimberlygunj',
+
+            // NEW (Little Andaman)
+            'Little Andaman',
+
+            // NEW (Nicobar District)
+            'Car Nicobar',
+            'Kamorta',
+            'Nancowry',
+            'Katchal',
+            'Teressa',
+            'Campbell Bay',
+        ],
+    },
+
+    {
+        stateCode: 'AP',
+        stateName: 'Andhra Pradesh',
+        cities: [
+            // Existing
+            'Visakhapatnam',
+            'Vijayawada',
+            'Guntur',
+            'Nellore',
+            'Tirupati',
+            'Kurnool',
+            'Rajahmundry',
+            'Kadapa',
+            'Anantapur',
+            'Eluru',
+            'Ongole',
+            'Chittoor',
+            'Machilipatnam',
+            'Vizianagaram',
+            'Srikakulam',
+            'Tenali',
+            'Proddatur',
+
+            // NEW (Major District HQs / Key Cities)
+            'Amaravati',
+            'Bhimavaram',
+            'Tadepalligudem',
+            'Narasaraopet',
+            'Chilakaluripet',
+            'Gudivada',
+            'Gudur',
+            'Adoni',
+            'Nandyal',
+            'Hindupur',
+            'Dharmavaram',
+            'Rayachoti',
+            'Puttur',
+            'Palasa',
+            'Parvathipuram',
+
+            // NEW (Emerging / Commercial / Transport Nodes)
+            'Kakinada',
+            'Samalkot',
+            'Anakapalle',
+            'Bapatla',
+            'Markapur',
+            'Vinukonda',
+            'Kavali',
+            'Atmakur',
+            'Rajampet',
+            'Kadiri',
+
+            // NEW (Smaller but Relevant Town Clusters)
+            'Madanapalle',
+            'Sattenapalle',
+            'Repalle',
+            'Tanuku',
+            'Narsapur',
+            'Amalapuram',
+            'Tuni',
+            'Yemmiganur',
+            'Gooty',
+            'Punganur',
+        ],
+    },
+    {
+        stateCode: 'AR',
+        stateName: 'Arunachal Pradesh',
+        cities: [
+            // Existing
+            'Itanagar',
+            'Naharlagun',
+            'Tawang',
+            'Pasighat',
+            'Ziro',
+            'Bomdila',
+            'Tezu',
+            'Roing',
+
+            // NEW (District HQ / Admin Centers)
+            'Seppa',
+            'Daporijo',
+            'Aalo',
+            'Yingkiong',
+            'Changlang',
+            'Khonsa',
+            'Anini',
+            'Longding',
+
+            // NEW (Emerging / Strategic Towns)
+            'Namsai',
+            'Hawai',
+            'Basar',
+            'Dirang',
+            'Rupa',
+
+            // NEW (Smaller but Relevant Local Centers)
+            'Deomali',
+            'Miao',
+            'Hayuliang',
+        ],
+    },
+
+    {
+        stateCode: 'AS',
+        stateName: 'Assam',
+        cities: [
+            // Existing
+            'Guwahati',
+            'Dibrugarh',
+            'Silchar',
+            'Jorhat',
+            'Tezpur',
+            'Nagaon',
+            'Tinsukia',
+            'Bongaigaon',
+            'Goalpara',
+            'Karimganj',
+            'Sivasagar',
+            'Barpeta',
+
+            // NEW (Major District HQs / Key Towns)
+            'Dhemaji',
+            'Lakhimpur',
+            'North Lakhimpur',
+            'Morigaon',
+            'Haflong',
+            'Diphu',
+            'Hamren',
+            'Mangaldoi',
+            'Udalguri',
+            'Kokrajhar',
+            'Dhubri',
+            'Hojai',
+            'Biswanath Chariali',
+            'Golaghat',
+
+            // NEW (Commercial / Regional Importance)
+            'Nazira',
+            'Margherita',
+            'Digboi',
+            'Duliajan',
+            'Lumding',
+            'Badarpur',
+            'Hailakandi',
+            'Rangia',
+            'Pathsala',
+            'Gauripur',
+
+            // NEW (Emerging / Smaller Administrative Nodes)
+            'Bilasipara',
+            'Sarupathar',
+            'Bokakhat',
+            'Tangla',
+            'Jagiroad',
+        ],
+    },
+
+    {
+        stateCode: 'BR',
+        stateName: 'Bihar',
+        cities: [
+            'Patna',
+            'Gaya',
+            'Muzaffarpur',
+            'Bhagalpur',
+            'Darbhanga',
+            'Purnia',
+            'Begusarai',
+            'Ara',
+            'Buxar',
+            'Katihar',
+            'Munger',
+            'Siwan',
+            'Motihari',
+
+            // NEW
+            'Chapra',
+            'Samastipur',
+            'Saharsa',
+            'Madhepura',
+            'Araria',
+            'Kishanganj',
+            'Jamui',
+            'Sheikhpura',
+            'Lakhisarai',
+            'Vaishali',
+            'Nalanda',
+        ],
+    },
+
+    {
+        stateCode: 'CG',
+        stateName: 'Chhattisgarh',
+        cities: [
+            // Existing
+            'Raipur',
+            'Bhilai',
+            'Bilaspur',
+            'Korba',
+            'Durg',
+            'Jagdalpur',
+            'Raigarh',
+            'Ambikapur',
+            'Rajnandgaon',
+            'Dhamtari',
+
+            // NEW (District HQ / Admin Centers)
+            'Balod',
+            'Bemetara',
+            'Baloda Bazar',
+            'Gariaband',
+            'Mahasamund',
+            'Kabirdham',
+            'Mungeli',
+            'Janjgir',
+            'Sakti',
+            'Surajpur',
+            'Kanker',
+            'Kondagaon',
+            'Narayanpur',
+            'Bijapur',
+            'Sukma',
+
+            // NEW (Industrial / Commercial Towns)
+            'Chirmiri',
+            'Korba West',
+            'Tilda',
+            'Bhatapara',
+            'Pendra',
+            'Dongargarh',
+
+            // NEW (Emerging / Regional Importance)
+            'Pathalgaon',
+            'Baikunthpur',
+            'Dantewada',
+            'Geedam',
+        ],
+    },
+
+    {
+        stateCode: 'CH',
+        stateName: 'Chandigarh',
+        cities: [
+            'Chandigarh',
+
+            // NEW (Key local zones / sectors behaving like areas)
+            'Manimajra',
+            'Burail',
+            'Dhanas',
+            'Mauli Jagran',
+
+            // NEW (Satellite relevance – optional but practical)
+            'Industrial Area Phase 1',
+            'Industrial Area Phase 2',
+        ],
+    },
+
+    {
+        stateCode: 'DD',
+        stateName: 'Dadra and Nagar Haveli and Daman and Diu',
+        cities: [
+            // Existing
+            'Daman',
+            'Diu',
+            'Silvassa',
+
+            // NEW (Daman region)
+            'Nani Daman',
+            'Moti Daman',
+            'Dabhel',
+
+            // NEW (Diu region)
+            'Ghoghla',
+            'Vanakbara',
+
+            // NEW (Silvassa / DN region)
+            'Naroli',
+            'Khanvel',
+            'Rakholi',
+            'Samarvarni',
+
+            // NEW (Smaller but relevant settlements)
+            'Masat',
+            'Amli',
+        ],
+    },
+
+    {
+        stateCode: 'DL',
+        stateName: 'Delhi',
+        cities: [
+            'New Delhi',
+            'Delhi Cantonment',
+            'Alipur',
+            'Bawana',
+            'Narela',
+            'Dwarka',
+            'Rohini',
+            'Saket',
+            'Karol Bagh',
+            'Lajpat Nagar',
+            'Janakpuri',
+            'Pitampura',
+            'Mayur Vihar',
+            'Vasant Kunj',
+            'Connaught Place',
+
+            // MORE
+            'Najafgarh',
+            'Shahdara',
+            'Seelampur',
+            'Dilshad Garden',
+            'Preet Vihar',
+            'Geeta Colony',
+            'Ashok Vihar',
+            'Model Town',
+            'Burari',
+            'Okhla',
+            'Badarpur',
+            'Kalkaji',
+            'Chhatarpur',
+            'Mehrauli',
+        ],
+    },
+
+    {
+        stateCode: 'GA',
+        stateName: 'Goa',
+        cities: [
+            // Existing
+            'Panaji',
+            'Margao',
+            'Vasco da Gama',
+            'Mapusa',
+            'Ponda',
+            'Bicholim',
+            'Curchorem',
+
+            // NEW (North Goa – tourism + commercial)
+            'Calangute',
+            'Candolim',
+            'Anjuna',
+            'Siolim',
+            'Porvorim',
+            'Arpora',
+
+            // NEW (South Goa – residential + tourism)
+            'Colva',
+            'Benaulim',
+            'Canacona',
+            'Quepem',
+            'Sanguem',
+
+            // NEW (Operational / local hubs)
+            'Pernem',
+            'Valpoi',
+            'Sanquelim',
+        ],
+    },
+
+    {
+        stateCode: 'GJ',
+        stateName: 'Gujarat',
+        cities: [
+            // Existing
+            'Ahmedabad',
+            'Surat',
+            'Vadodara',
+            'Rajkot',
+            'Bhavnagar',
+            'Jamnagar',
+            'Gandhinagar',
+            'Junagadh',
+            'Anand',
+            'Navsari',
+            'Morbi',
+            'Mehsana',
+            'Bharuch',
+            'Porbandar',
+
+            // NEW (Major District HQs)
+            'Surendranagar',
+            'Amreli',
+            'Patan',
+            'Banaskantha',
+            'Palanpur',
+            'Dahod',
+            'Godhra',
+            'Narmada',
+            'Rajpipla',
+            'Tapi',
+            'Vyara',
+            'Valsad',
+            'Vapi',
+
+            // NEW (Industrial / Commercial Hubs)
+            'Ankleshwar',
+            'Dahej',
+            'Hazira',
+            'Sanand',
+            'Halol',
+            'Kalol',
+            'Chhatral',
+
+            // NEW (Regional / Mid-tier Cities)
+            'Bhuj',
+            'Gandhidham',
+            'Veraval',
+            'Somnath',
+            'Botad',
+            'Jetpur',
+            'Dhoraji',
+            'Wankaner',
+            'Modasa',
+            'Himmatnagar',
+
+            // NEW (Emerging / Smaller Centers)
+            'Umbergaon',
+            'Mandvi',
+            'Deesa',
+            'Visnagar',
+            'Kadi',
+        ],
+    },
+
+    {
+        stateCode: 'HR',
+        stateName: 'Haryana',
+        cities: [
+            // Existing
+            'Gurugram',
+            'Faridabad',
+            'Panipat',
+            'Ambala',
+            'Hisar',
+            'Rohtak',
+            'Karnal',
+            'Sonipat',
+            'Yamunanagar',
+            'Panchkula',
+            'Bhiwani',
+            'Sirsa',
+            'Jhajjar',
+
+            // NEW (District HQ / Key Cities)
+            'Rewari',
+            'Mahendragarh',
+            'Narnaul',
+            'Kaithal',
+            'Kurukshetra',
+            'Jind',
+            'Fatehabad',
+            'Palwal',
+            'Charkhi Dadri',
+
+            // NEW (NCR / High-growth zones)
+            'Manesar',
+            'Bahadurgarh',
+            'Ballabhgarh',
+            'Hodal',
+            'Sohna',
+
+            // NEW (Industrial / Transport hubs)
+            'Samalkha',
+            'Gohana',
+            'Dabwali',
+            'Ratia',
+            'Narwana',
+
+            // NEW (Emerging / Smaller nodes)
+            'Tohana',
+            'Ellenabad',
+            'Kosli',
+        ],
+    },
+
+    {
+        stateCode: 'HP',
+        stateName: 'Himachal Pradesh',
+        cities: [
+            // Existing
+            'Shimla',
+            'Dharamshala',
+            'Solan',
+            'Mandi',
+            'Kullu',
+            'Manali',
+            'Hamirpur',
+            'Bilaspur',
+            'Chamba',
+            'Una',
+
+            // NEW (District HQ / Admin towns)
+            'Kangra',
+            'Kinnaur',
+            'Keylong',
+            'Reckong Peo',
+            'Nahan',
+
+            // NEW (Tourism-heavy locations)
+            'Dalhousie',
+            'Palampur',
+            'Kasauli',
+            'McLeod Ganj',
+            'Bir',
+
+            // NEW (Regional / mid-tier towns)
+            'Sundernagar',
+            'Nurpur',
+            'Jogindernagar',
+            'Rampur',
+            'Theog',
+
+            // NEW (Smaller but relevant nodes)
+            'Paonta Sahib',
+            'Banjar',
+            'Chail',
+        ],
+    },
+
+    {
+        stateCode: 'JH',
+        stateName: 'Jharkhand',
+        cities: [
+            // Existing
+            'Ranchi',
+            'Jamshedpur',
+            'Dhanbad',
+            'Bokaro',
+            'Deoghar',
+            'Hazaribagh',
+            'Giridih',
+            'Ramgarh',
+
+            // NEW (District HQ / Admin Centers)
+            'Chatra',
+            'Koderma',
+            'Latehar',
+            'Lohardaga',
+            'Pakur',
+            'Sahebganj',
+            'Simdega',
+            'Dumka',
+            'Godda',
+            'Jamtara',
+            'Khunti',
+            'Gumla',
+
+            // NEW (Industrial / Mining Belt)
+            'Chandrapura',
+            'Sindri',
+            'Jharia',
+            'Chirkunda',
+            'Bermo',
+            'Phusro',
+
+            // NEW (Commercial / Regional Towns)
+            'Chaibasa',
+            'Saraikela',
+            'Madhupur',
+            'Garhwa',
+            'Hussainabad',
+
+            // NEW (Emerging / Smaller Nodes)
+            'Barharwa',
+            'Rajmahal',
+            'Netarhat',
+        ],
+    },
+
+    {
+        stateCode: 'JK',
+        stateName: 'Jammu and Kashmir',
+        cities: [
+            // Existing
+            'Srinagar',
+            'Jammu',
+            'Anantnag',
+            'Baramulla',
+            'Pulwama',
+            'Kupwara',
+            'Udhampur',
+            'Kathua',
+
+            // NEW (Kashmir Valley – District HQ / Key Towns)
+            'Budgam',
+            'Ganderbal',
+            'Kulgam',
+            'Shopian',
+            'Bandipora',
+            'Handwara',
+            'Pahalgam',
+            'Sopore',
+
+            // NEW (Jammu Region – District HQ / Admin Centers)
+            'Rajouri',
+            'Poonch',
+            'Doda',
+            'Kishtwar',
+            'Ramban',
+            'Reasi',
+            'Samba',
+
+            // NEW (Tourism / Strategic Locations)
+            'Gulmarg',
+            'Sonamarg',
+            'Patnitop',
+
+            // NEW (Emerging / Smaller Nodes)
+            'Akhnoor',
+            'Billawar',
+            'Banihal',
+        ],
+    },
+
+    {
+        stateCode: 'KA',
+        stateName: 'Karnataka',
+        cities: [
+            // Existing
+            'Bengaluru',
+            'Mysuru',
+            'Mangaluru',
+            'Hubballi',
+            'Belagavi',
+            'Kalaburagi',
+            'Davanagere',
+            'Udupi',
+            'Ballari',
+            'Tumakuru',
+            'Shivamogga',
+            'Bidar',
+            'Hassan',
+            'Mandya',
+            'Raichur',
+            'Kolar',
+
+            // NEW (District HQ / Key Cities)
+            'Chikkamagaluru',
+            'Chitradurga',
+            'Gadag',
+            'Haveri',
+            'Kodagu',
+            'Madikeri',
+            'Koppal',
+            'Ramanagara',
+            'Yadgir',
+            'Bagalkot',
+            'Chamarajanagar',
+            'Uttara Kannada',
+
+            // NEW (Industrial / Commercial Hubs)
+            'Hosapete',
+            'Ranebennur',
+            'Doddaballapur',
+            'Nelamangala',
+            'Bidadi',
+            'Karwar',
+            'Sirsi',
+            'Puttur',
+
+            // NEW (Emerging / Regional Towns)
+            'Gokak',
+            'Athani',
+            'Jamkhandi',
+            'Sindhanur',
+            'Bhadravati',
+            'Tiptur',
+            'Sagar',
+
+            // NEW (Smaller but Relevant Nodes)
+            'Mudhol',
+            'Nanjangud',
+            'Karkala',
+        ],
+    },
+
+    {
+        stateCode: 'KL',
+        stateName: 'Kerala',
+        cities: [
+            // Existing
+            'Thiruvananthapuram',
+            'Kochi',
+            'Kozhikode',
+            'Thrissur',
+            'Kannur',
+            'Kollam',
+            'Alappuzha',
+            'Palakkad',
+            'Malappuram',
+            'Kottayam',
+
+            // NEW (District HQ / Key Towns)
+            'Pathanamthitta',
+            'Idukki',
+            'Wayanad',
+            'Kasaragod',
+
+            // NEW (Urban Clusters / Commercial Centers)
+            'Ernakulam',
+            'Tripunithura',
+            'Perumbavoor',
+            'Angamaly',
+            'Chalakudy',
+            'Irinjalakuda',
+            'Guruvayur',
+
+            // NEW (Tourism / Coastal / Regional Importance)
+            'Varkala',
+            'Kovalam',
+            'Munnar',
+            'Thekkady',
+            'Bekal',
+
+            // NEW (Mid-tier / High-density Towns)
+            'Thalassery',
+            'Payyannur',
+            'Taliparamba',
+            'Ponnani',
+            'Tirur',
+            'Manjeri',
+            'Kanhangad',
+
+            // NEW (Smaller but Operational Nodes)
+            'Neyyattinkara',
+            'Attingal',
+            'Kayamkulam',
+            'Adoor',
+            'Changanassery',
+        ],
+    },
+
+    {
+        stateCode: 'LA',
+        stateName: 'Ladakh',
+        cities: [
+            // Existing
+            'Leh',
+            'Kargil',
+
+            // NEW (Administrative / Key Settlements)
+            'Diskit',
+            'Nyoma',
+            'Durbuk',
+            'Sankoo',
+
+            // NEW (Tourism / Access Nodes)
+            'Nubra Valley',
+            'Zanskar',
+            'Dras',
+            'Padum',
+
+            // NEW (Smaller but Relevant Locations)
+            'Khaltsi',
+            'Tangtse',
+        ],
+    },
+
+    {
+        stateCode: 'LD',
+        stateName: 'Lakshadweep',
+        cities: [
+            // Existing
+            'Kavaratti',
+            'Agatti',
+            'Amini',
+            'Andrott',
+            'Minicoy',
+
+            // NEW (Other Inhabited Islands)
+            'Kalpeni',
+            'Kadmat',
+            'Kiltan',
+            'Chetlat',
+            'Bitra',
+        ],
+    },
+
+    {
+        stateCode: 'MH',
+        stateName: 'Maharashtra',
+        cities: [
+            'Mumbai',
+            'Pune',
+            'Nagpur',
+            'Nashik',
+            'Thane',
+            'Aurangabad',
+            'Solapur',
+            'Kolhapur',
+            'Navi Mumbai',
+            'Amravati',
+            'Nanded',
+            'Akola',
+            'Jalgaon',
+            'Latur',
+            'Dhule',
+            'Chandrapur',
+            'Parbhani',
+            'Satara',
+            'Ratnagiri',
+
+            // NEW
+            'Beed',
+            'Osmanabad',
+            'Wardha',
+            'Gondia',
+            'Bhandara',
+            'Yavatmal',
+            'Washim',
+            'Hingoli',
+            'Sindhudurg',
+            'Palghar',
+        ],
+    },
+
+    {
+        stateCode: 'ML',
+        stateName: 'Meghalaya',
+        cities: [
+            // Existing
+            'Shillong',
+            'Tura',
+            'Jowai',
+            'Nongpoh',
+            'Baghmara',
+
+            // NEW (District HQ / Admin Centers)
+            'Williamnagar',
+            'Resubelpara',
+            'Ampati',
+            'Mawkyrwat',
+            'Khliehriat',
+
+            // NEW (Regional / Commercial Towns)
+            'Nongstoin',
+            'Mairang',
+            'Cherrapunji',
+            'Dawki',
+
+            // NEW (Smaller but Relevant Nodes)
+            'Mawlai',
+            'Mawphlang',
+        ],
+    },
+
+    {
+        stateCode: 'MN',
+        stateName: 'Manipur',
+        cities: [
+            // Existing
+            'Imphal',
+            'Thoubal',
+            'Bishnupur',
+            'Churachandpur',
+            'Ukhrul',
+
+            // NEW (Valley Region – Key Towns)
+            'Kakching',
+            'Moirang',
+            'Jiribam',
+
+            // NEW (Hill District HQs)
+            'Senapati',
+            'Tamenglong',
+            'Chandel',
+            'Kangpokpi',
+            'Noney',
+            'Tengnoupal',
+            'Kamjong',
+            'Pherzawl',
+
+            // NEW (Emerging / Regional Nodes)
+            'Moreh',
+            'Lilong',
+        ],
+    },
+
+    {
+        stateCode: 'MP',
+        stateName: 'Madhya Pradesh',
+        cities: [
+            // Existing
+            'Bhopal',
+            'Indore',
+            'Jabalpur',
+            'Gwalior',
+            'Ujjain',
+            'Sagar',
+            'Rewa',
+            'Satna',
+            'Ratlam',
+            'Burhanpur',
+            'Khandwa',
+            'Chhindwara',
+
+            // NEW (District HQ / Admin Centers)
+            'Sehore',
+            'Raisen',
+            'Vidisha',
+            'Hoshangabad',
+            'Betul',
+            'Dewas',
+            'Mandsaur',
+            'Neemuch',
+            'Shivpuri',
+            'Guna',
+            'Ashoknagar',
+            'Datia',
+            'Bhind',
+            'Morena',
+            'Sheopur',
+            'Damoh',
+            'Panna',
+            'Tikamgarh',
+            'Chhatarpur',
+            'Umaria',
+            'Shahdol',
+            'Anuppur',
+            'Sidhi',
+            'Singrauli',
+            'Mandla',
+            'Dindori',
+            'Seoni',
+            'Balaghat',
+            'Narsinghpur',
+            'Katni',
+            'Harda',
+
+            // NEW (Industrial / Commercial Towns)
+            'Itarsi',
+            'Nagda',
+            'Pithampur',
+            'Maihar',
+            'Sarni',
+
+            // NEW (Regional / Emerging Nodes)
+            'Bina',
+            'Shujalpur',
+            'Alirajpur',
+            'Jhabua',
+            'Barwani',
+            'Khargone',
+        ],
+    },
+
+    {
+        stateCode: 'MZ',
+        stateName: 'Mizoram',
+        cities: [
+            // Existing
+            'Aizawl',
+            'Lunglei',
+            'Champhai',
+            'Serchhip',
+            'Kolasib',
+
+            // NEW (District HQ / Admin Centers)
+            'Saiha',
+            'Lawngtlai',
+            'Mamit',
+            'Saitual',
+            'Khawzawl',
+            'Hnahthial',
+
+            // NEW (Regional / Border / Trade Nodes)
+            'Zokhawthar',
+
+            // NEW (Smaller but Relevant Towns)
+            'Biate',
+            'Thenzawl',
+        ],
+    },
+
+    {
+        stateCode: 'NL',
+        stateName: 'Nagaland',
+        cities: [
+            // Existing
+            'Kohima',
+            'Dimapur',
+            'Mokokchung',
+            'Tuensang',
+            'Wokha',
+
+            // NEW (District HQ / Admin Centers)
+            'Zunheboto',
+            'Phek',
+            'Mon',
+            'Longleng',
+            'Kiphire',
+            'Peren',
+            'Noklak',
+
+            // NEW (Commercial / Regional Nodes)
+            'Chumukedima',
+
+            // NEW (Emerging / Smaller Towns)
+            'Tseminyu',
+            'Meluri',
+        ],
+    },
+
+    {
+        stateCode: 'OD',
+        stateName: 'Odisha',
+        cities: [
+            // Existing
+            'Bhubaneswar',
+            'Cuttack',
+            'Rourkela',
+            'Puri',
+            'Sambalpur',
+            'Balasore',
+            'Berhampur',
+            'Bhadrak',
+            'Baripada',
+            'Jharsuguda',
+
+            // NEW (District HQ / Admin Centers)
+            'Angul',
+            'Bargarh',
+            'Balangir',
+            'Boudh',
+            'Deogarh',
+            'Dhenkanal',
+            'Gajapati',
+            'Ganjam',
+            'Jagatsinghpur',
+            'Jajpur',
+            'Kalahandi',
+            'Kandhamal',
+            'Kendrapara',
+            'Kendujhar',
+            'Koraput',
+            'Malkangiri',
+            'Mayurbhanj',
+            'Nabarangpur',
+            'Nayagarh',
+            'Nuapada',
+            'Rayagada',
+            'Sonepur',
+
+            // NEW (Industrial / Commercial Towns)
+            'Talcher',
+            'Paradeep',
+            'Jatani',
+            'Choudwar',
+
+            // NEW (Tourism / Coastal / Regional)
+            'Konark',
+            'Chandipur',
+            'Gopalpur',
+        ],
+    },
+
+    {
+        stateCode: 'PB',
+        stateName: 'Punjab',
+        cities: [
+            // Existing
+            'Ludhiana',
+            'Amritsar',
+            'Jalandhar',
+            'Patiala',
+            'Bathinda',
+            'Mohali',
+            'Pathankot',
+            'Hoshiarpur',
+            'Moga',
+            'Firozpur',
+
+            // NEW (District HQ / Key Cities)
+            'Gurdaspur',
+            'Kapurthala',
+            'Sangrur',
+            'Barnala',
+            'Faridkot',
+            'Fazilka',
+            'Rupnagar',
+            'Tarn Taran',
+            'Mansa',
+
+            // NEW (Industrial / Commercial Hubs)
+            'Phagwara',
+            'Zirakpur',
+            'Kharar',
+            'Rajpura',
+            'Abohar',
+
+            // NEW (Emerging / Regional Towns)
+            'Batala',
+            'Malerkotla',
+            'Muktsar',
+            'Nawanshahr',
+            'Derabassi',
+        ],
+    },
+
+    {
+        stateCode: 'PY',
+        stateName: 'Puducherry',
+        cities: [
+            // Existing
+            'Puducherry',
+            'Karaikal',
+            'Mahe',
+            'Yanam',
+
+            // NEW (Puducherry region – local clusters)
+            'Oulgaret',
+            'Villianur',
+            'Bahour',
+
+            // NEW (Karaikal region)
+            'Nedungadu',
+            'Thirunallar',
+
+            // NEW (Mahe / Yanam minor coverage)
+            'Mahe Town',
+            'Yanam Town',
+        ],
+    },
+
+    {
+        stateCode: 'RJ',
+        stateName: 'Rajasthan',
+        cities: [
+            // Existing
+            'Jaipur',
+            'Jodhpur',
+            'Udaipur',
+            'Kota',
+            'Ajmer',
+            'Bikaner',
+            'Alwar',
+            'Bharatpur',
+            'Sikar',
+            'Pali',
+            'Sri Ganganagar',
+            'Hanumangarh',
+
+            // NEW (District HQ / Admin Centers)
+            'Barmer',
+            'Jaisalmer',
+            'Nagaur',
+            'Tonk',
+            'Bundi',
+            'Chittorgarh',
+            'Rajsamand',
+            'Dungarpur',
+            'Banswara',
+            'Pratapgarh',
+            'Jhalawar',
+            'Dholpur',
+            'Karauli',
+            'Sawai Madhopur',
+            'Jhunjhunu',
+
+            // NEW (Industrial / Commercial Towns)
+            'Beawar',
+            'Kishangarh',
+            'Balotra',
+            'Falna',
+
+            // NEW (Tourism / Regional Importance)
+            'Mount Abu',
+            'Pushkar',
+            'Neemrana',
+
+            // NEW (Emerging / Smaller Nodes)
+            'Churu',
+            'Baran',
+            'Makrana',
+            'Didwana',
+        ],
+    },
+
+    {
+        stateCode: 'SK',
+        stateName: 'Sikkim',
+        cities: [
+            // Existing
+            'Gangtok',
+            'Namchi',
+            'Gyalshing',
+            'Mangan',
+            'Singtam',
+
+            // NEW (District HQ / Admin Centers)
+            'Pakyong',
+            'Soreng',
+
+            // NEW (Tourism / High-traffic Locations)
+            'Ravangla',
+            'Pelling',
+            'Yuksom',
+            'Lachung',
+            'Lachen',
+
+            // NEW (Transit / Regional Nodes)
+            'Rangpo',
+            'Jorethang',
+
+            // NEW (Smaller but Relevant Towns)
+            'Nayabazar',
+            'Rhenock',
+        ],
+    },
+
+    {
+        stateCode: 'TN',
+        stateName: 'Tamil Nadu',
+        cities: [
+            // Existing
+            'Chennai',
+            'Coimbatore',
+            'Madurai',
+            'Tiruchirappalli',
+            'Salem',
+            'Tiruppur',
+            'Vellore',
+            'Erode',
+            'Thoothukudi',
+            'Dindigul',
+            'Thanjavur',
+            'Nagercoil',
+
+            // NEW (District HQ / Admin Centers)
+            'Kanchipuram',
+            'Tiruvallur',
+            'Krishnagiri',
+            'Dharmapuri',
+            'Namakkal',
+            'Karur',
+            'Perambalur',
+            'Ariyalur',
+            'Nagapattinam',
+            'Mayiladuthurai',
+            'Tiruvarur',
+            'Sivaganga',
+            'Ramanathapuram',
+            'Virudhunagar',
+            'Tenkasi',
+
+            // NEW (Industrial / Commercial Towns)
+            'Hosur',
+            'Sriperumbudur',
+            'Ranipet',
+            'Ambur',
+            'Tirunelveli',
+
+            // NEW (Tourism / Regional Importance)
+            'Ooty',
+            'Kodaikanal',
+            'Rameswaram',
+            'Mahabalipuram',
+
+            // NEW (Emerging / High-density Towns)
+            'Pollachi',
+            'Cuddalore',
+            'Pudukkottai',
+            'Kumbakonam',
+            'Rajapalayam',
+            'Tiruvannamalai',
+        ],
+    },
+
+    {
+        stateCode: 'TS',
+        stateName: 'Telangana',
+        cities: [
+            // Existing
+            'Hyderabad',
+            'Warangal',
+            'Nizamabad',
+            'Karimnagar',
+            'Khammam',
+            'Ramagundam',
+            'Mahbubnagar',
+            'Adilabad',
+
+            // NEW (District HQ / Admin Centers)
+            'Siddipet',
+            'Suryapet',
+            'Nalgonda',
+            'Jagtial',
+            'Kamareddy',
+            'Medak',
+            'Sangareddy',
+            'Mahabubabad',
+            'Bhadradri Kothagudem',
+            'Wanaparthy',
+            'Nagarkurnool',
+            'Mancherial',
+            'Nirmal',
+
+            // NEW (Hyderabad Peripheral / Growth Zones)
+            'Secunderabad',
+            'Gachibowli',
+            'Madhapur',
+            'Shamshabad',
+            'Uppal',
+
+            // NEW (Industrial / Regional Nodes)
+            'Peddapalli',
+            'Bhongir',
+            'Zaheerabad',
+        ],
+    },
+
+    {
+        stateCode: 'TR',
+        stateName: 'Tripura',
+        cities: [
+            // Existing
+            'Agartala',
+            'Udaipur',
+            'Dharmanagar',
+            'Ambassa',
+            'Belonia',
+
+            // NEW (District HQ / Admin Centers)
+            'Kailasahar',
+            'Khowai',
+            'Sepahijala',
+            'Gomati',
+
+            // NEW (Regional / Commercial Towns)
+            'Teliamura',
+            'Sonamura',
+            'Amarpur',
+            'Sabroom',
+
+            // NEW (Border / Strategic Locations)
+            'Kamalpur',
+            'Melaghar',
+        ],
+    },
+
+    {
+        stateCode: 'UP',
+        stateName: 'Uttar Pradesh',
+        cities: [
+            'Lucknow',
+            'Kanpur',
+            'Noida',
+            'Ghaziabad',
+            'Varanasi',
+            'Agra',
+            'Prayagraj',
+            'Meerut',
+            'Gorakhpur',
+            'Aligarh',
+            'Bareilly',
+            'Moradabad',
+            'Saharanpur',
+            'Jhansi',
+            'Mathura',
+            'Ayodhya',
+            'Rampur',
+
+            // NEW EXPANSION
+            'Shamli',
+            'Muzaffarnagar',
+            'Bijnor',
+            'Amroha',
+            'Sambhal',
+            'Etawah',
+            'Mainpuri',
+            'Farrukhabad',
+            'Kannauj',
+            'Hardoi',
+            'Sitapur',
+            'Lakhimpur',
+            'Bahraich',
+            'Balrampur',
+            'Shrawasti',
+            'Gonda',
+            'Basti',
+            'Sant Kabir Nagar',
+            'Mau',
+            'Azamgarh',
+            'Ballia',
+            'Deoria',
+            'Kushinagar',
+            'Chandauli',
+            'Mirzapur',
+            'Sonbhadra',
+            'Fatehpur',
+            'Kaushambi',
+            'Unnao',
+            'Raebareli',
+            'Barabanki',
+            'Sultanpur',
+            'Ambedkar Nagar',
+            'Amethi',
+            'Hapur',
+            'Bulandshahr',
+        ],
+    },
+
+    {
+        stateCode: 'UK',
+        stateName: 'Uttarakhand',
+        cities: [
+            // Existing
+            'Dehradun',
+            'Haridwar',
+            'Rishikesh',
+            'Haldwani',
+            'Roorkee',
+            'Nainital',
+            'Rudrapur',
+            'Kotdwar',
+
+            // NEW (District HQ / Admin Centers)
+            'Pauri',
+            'Tehri',
+            'Uttarkashi',
+            'Chamoli',
+            'Rudraprayag',
+            'Almora',
+            'Bageshwar',
+            'Champawat',
+            'Pithoragarh',
+
+            // NEW (Tourism / Religious Hubs)
+            'Mussoorie',
+            'Kedarnath',
+            'Badrinath',
+            'Gangotri',
+            'Yamunotri',
+            'Auli',
+
+            // NEW (Regional / Transit Towns)
+            'Kashipur',
+            'Sitarganj',
+            'Tanakpur',
+            'Ramnagar',
+            'Joshimath',
+
+            // NEW (Smaller but Relevant Nodes)
+            'Khatima',
+            'Dwarahat',
+        ],
+    },
+
+    {
+        stateCode: 'WB',
+        stateName: 'West Bengal',
+        cities: [
+            'Kolkata',
+            'Howrah',
+            'Durgapur',
+            'Siliguri',
+            'Asansol',
+            'Kharagpur',
+            'Darjeeling',
+            'Bardhaman',
+            'Malda',
+            'Haldia',
+            'Krishnanagar',
+            'Raiganj',
+
+            // NEW
+            'Bankura',
+            'Purulia',
+            'Midnapore',
+            'Jhargram',
+            'Contai',
+            'Diamond Harbour',
+            'Basirhat',
+            'Bangaon',
+            'Habra',
+            'Barasat',
+            'Barrackpore',
+            'Chandannagar',
+            'Serampore',
+            'Uluberia',
+            'Katwa',
+            'Bolpur',
+            'Rampurhat',
+            'Cooch Behar',
+            'Jalpaiguri',
+            'Alipurduar',
+            'Kalimpong',
+        ],
+    },
+];
+
+export default indiaStatesCities;
